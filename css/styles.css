@@ -10,21 +10,30 @@ body{
   background:var(--bg); color:#222
 }
 .brand{
-  font-family:'Playfair Display', serif;
-  font-size:1.3rem;
-  font-weight:700
+  font-family:'Times New Roman', bold;
+  font-size:2rem;
+  font-weight:700;
 }
 
-/* Hero */
-.hero{
-  min-height:70vh;
-  background-image: url('images/hero1.jpg');
-  background-size:cover;
-  background-position:center;
-  color:#fff;
-  display:flex;
-  align-items:center;
+.navbar-brand {
+  margin-left: 0; /* remove any default spacing */
+  padding-left: 0;
 }
+
+
+.hero {
+  min-height: 90vh;
+  background-image:
+    linear-gradient(rgba(10,10,10,0.35), rgba(10,10,10,0.35)),
+    url('../images/hero1.jpg');
+  background-size: cover;
+  background-position: center; 
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
 .hero .lead{
   font-size:1.15rem;
   color:rgba(255,255,255,0.9)

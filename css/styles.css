@@ -19,12 +19,52 @@ body {
   overflow-x: hidden;
 }
 
-.brand {
-  font-family: 'Times New Roman', bold;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #2b2623;
+/* Navbar brand container */
+.navbar-brand {
+  margin-left: 0;
+  padding-left: 0;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
 }
+
+/* Default brand look */
+.brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #2b2623;                       /* dark text by default */
+  position: relative;
+  padding: 6px 14px;                    /* some breathing space for the future rect */
+  border-radius: 999px;                 /* pill shape */
+  overflow: hidden;                     /* so the rect stays clipped */
+  transition: color 0.2s ease;
+}
+
+/* Rectangle behind text (initially invisible) */
+.brand::before {
+  content: "";
+  position: absolute;
+  inset: 0;                             /* full pill area */
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  opacity: 0;                           /* hidden by default */
+  transform: scaleX(0.4);
+  transform-origin: center;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  z-index: -1;                          /* sit behind the text */
+}
+
+/* Hover: rectangle appears and text turns white */
+.navbar-brand:hover .brand {
+  color: #fff;
+}
+
+.navbar-brand:hover .brand::before {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
 
 .navbar {
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
@@ -32,60 +72,71 @@ body {
   backdrop-filter: blur(10px);
 }
 
-.navbar-brand {
-  margin-left: 0;
-  padding-left: 0;
-}
-
 .nav-link {
   color: #5a4c41 !important;
   font-weight: 500;
+  position: relative;
+  transition: color 0.2s ease, font-weight 0.2s ease;
+  font-size: 1.2rem;
 }
 
+/* Hover + focus: bold and underline */
 .nav-link:hover,
 .nav-link:focus {
   color: var(--accent-dark) !important;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
+
+/* Optional: keep active link bold + underlined as well */
+.nav-link.active {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 
 /* Hero Carousel */
+/* Full-screen carousel height */
 .carousel-item {
-  height: 90vh;
-}
-
-.hero {
-  min-height: 90vh;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: flex;
-  align-items: center;
-  color: #fff;
+  height: 100vh;
   position: relative;
 }
 
-.hero-slide-1 {
-  background-image:
-    linear-gradient(rgba(20, 14, 10, 0.55), rgba(20, 14, 10, 0.55)),
-    url('https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1920&q=80');
+/* The hero image itself */
+.hero-img {
+  height: 100vh;          /* fill viewport vertically */
+  width: 100%;
+  object-fit: cover;      /* fills without gaps, natural zoom */
 }
 
-.hero-slide-2 {
-  background-image:
-    linear-gradient(rgba(20, 14, 10, 0.55), rgba(20, 14, 10, 0.55)),
-    url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1920&q=80');
+/* Per-slide focal point tuning: adjust as needed */
+.hero-img-1 {
+  object-position: center center;   /* subject in center */
 }
 
-.hero-slide-3 {
-  background-image:
-    linear-gradient(rgba(20, 14, 10, 0.55), rgba(20, 14, 10, 0.55)),
-    url('https://images.unsplash.com/photo-1545389336-cf090694435e?w=1920&q=80');
+.hero-img-2 {
+  object-position: center top;      /* shift up if heads are higher in frame */
 }
 
-.hero .lead {
-  font-size: 1.15rem;
-  color: rgba(255, 245, 235, 0.9);
+.hero-img-3 {
+  object-position: center center;
 }
 
+/* Dark overlay so text is always readable */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.55),
+    rgba(0, 0, 0, 0.35),
+    rgba(0, 0, 0, 0.65)
+  );
+}
+
+/* Optional: adjust controls/indicators for visibility */
 .carousel-control-prev,
 .carousel-control-next {
   width: 5%;
@@ -100,6 +151,7 @@ body {
 .carousel-indicators .active {
   background-color: var(--accent);
 }
+
 
 /* Buttons */
 .btn-accent {
@@ -208,18 +260,40 @@ section .display-6 {
   font-weight: 500;
 }
 
-/* Instructors */
-.instructor {
-  transition: all 0.3s ease;
+/* Single instructor layout */
+.instructor-photo-wrapper {
+  max-width: 320px;        /* a bit narrower */
+  margin: 0 auto;
 }
 
-.instructor:hover {
-  transform: scale(1.05);
+.instructor-photo {
+  width: 100%;
+  height: 380px;           /* controls the visible height */
+  border-radius: 18px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+  object-fit: cover;       /* crop nicely instead of stretching */
+  object-position: center; /* keep subject centered */
 }
 
-.instructor-img-placeholder {
-  background: linear-gradient(135deg, #f4a259 0%, #d96c33 50%, #8c4a32 100%);
+
+/* Text block */
+.instructor-content {
+  padding-left: 0.5rem;
 }
+
+@media (max-width: 991.98px) {
+  /* Stack nicely on tablet & mobile */
+  .instructor-content {
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .instructor-content ul {
+    text-align: left;
+    display: inline-block;
+  }
+}
+
 
 /* Testimonials */
 .testimonial {
